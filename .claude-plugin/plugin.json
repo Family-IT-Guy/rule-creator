@@ -1,0 +1,16 @@
+{
+  "name": "rule-creator",
+  "description": "Write the smallest instruction that actually changes how your AI behaves — a custom-instructions block, a CLAUDE.md/AGENTS.md/GEMINI.md rule, or a skill — fitted to your harness and proven with a before/after demo. Use when you want your AI to start or stop doing something and reminders won't stick.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Ben Gillenwater"
+  },
+  "keywords": [
+    "rules",
+    "system-prompt",
+    "claude-md",
+    "agents-md",
+    "instructions",
+    "prompt-engineering"
+  ]
+}
