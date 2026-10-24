@@ -17,7 +17,7 @@ Three outcomes, in order of preference:
 
 1. **A moment exists** → write it as *when T, do A*. The trigger must be concretely present at the moment of need: a word in an artifact, a named point in a task, a file being touched, a claim about to be made. "When relevant" is not a moment.
 2. **No moment, but the harness can enforce it** → use the harness, and decide first whether the mechanism will BLOCK or only REPORT, because that decides what it is allowed to check. A blocking mechanism needs a failure set enumerable **completely** in advance; over an open set a blocking check is worse than nothing, since it misses every novel case while producing the confidence that a check ran. A reporting mechanism carries no such requirement — an open set is fine, provided a miss leaves things exactly as they are today and a false positive costs one line of reading. Neither of those errors produces false confidence, which is the harm being avoided. Blocking and cannot enumerate → back to 1, or 3, or make it report instead. Check the model-independent surface in cost order — a declarative permission entry first, then a settings change, then a hook, which is general-purpose and the most expensive. And it logs every fire from its first commit, or it is not observable and cannot later be removed.
-3. **Neither** → say so inside the rule. It is a discipline backed by the correction loop, not a gate. Never dress it as a mechanism; a rule claiming something happens automatically must name the hook, script, or harness event that causes it, in the same sentence.
+3. **Neither** → say so inside the rule. It is a discipline that holds only while the user corrects lapses, not a gate. Never dress it as a mechanism; a rule claiming something happens automatically must name the hook, script, or harness event that causes it, in the same sentence.
 
 ## Anti-patterns
 
@@ -89,7 +89,7 @@ Read the rules rather than classifying them mechanically — for a set small eno
 
 - **Shape** — does it name a moment? Apply the shape test. Report which rules are values with no trigger and no mechanism; that set is the finding.
 - **Dangling references** — does it point at a file, script, or rule that exists?
-- **Provenance** — can you state what the author wanted, in their words? If not, that is a finding. Search the conversation archive before asking them, since a rule can predate the config repo and the author may not remember; git often cannot answer and the archive can. Not grounds for removal.
+- **Provenance** — can you state what the author wanted, in their words? If not, that is a finding. Search the user's past conversations, where they keep them, before asking: a rule can predate its git history and the author may not remember, and a conversation record can often answer what git cannot. Not grounds for removal.
 - **Removal** — three findings each justify proposing removal: the rule fired and the work would have gone the same way without it; the situation it was written for no longer exists; another rule now covers it. **That a rule has never fired is NOT grounds** — a rule that silently broke and one whose case never arose are indistinguishable from outside, so removing on non-firing removes the broken ones preferentially.
 
 Propose; never remove unilaterally. The user rules on each.
