@@ -1,7 +1,7 @@
 {
   "name": "rule-creator",
   "description": "Write, audit, or remove an instruction that changes how your AI behaves — a custom-instructions block, a CLAUDE.md/AGENTS.md/GEMINI.md rule, or a skill — fitted to your harness and tested against its own absence. Use when you want your AI to start or stop doing something, a rule isn't working, or your existing rules need auditing, thinning or removing.",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": {
     "name": "Ben Gillenwater"
   },

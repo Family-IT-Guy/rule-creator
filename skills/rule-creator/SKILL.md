@@ -5,7 +5,7 @@ description: Write, audit, or remove an instruction that changes how an LLM beha
 
 # Rule Creator
 
-Produce the smallest instruction that reliably changes the model's behavior, in the form the user's harness can actually use — and test it against its own absence. The only reader is the model. Harness map and the nine architecture principles: [REFERENCE.md](REFERENCE.md). If a `personal.md` sits beside this file, read it first: it holds the owner's own paths and cases, which override the defaults below.
+Produce the smallest instruction that reliably changes the model's behavior, in the form the user's harness can actually use — and test it against its own absence. The only reader is the model. Where each kind of instruction goes, and the nine architecture principles: [REFERENCE.md](REFERENCE.md). If a `personal.md` sits beside this file, read it first: it holds the owner's own paths and cases, which override the defaults below.
 
 Two paths: **write** a new rule → steps 1–7. **Audit** existing rules → step 8. Every step ends on a **Done when** check; a step without one gets skipped under the pull of the next.
 

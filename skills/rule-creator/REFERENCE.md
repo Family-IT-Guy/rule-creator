@@ -28,37 +28,19 @@ Work in this order; the result lands under 100 lines:
 
 Over 100 lines → revisit principles 1, 2, 7.
 
-## Harness → artifact map
+## Where an instruction goes
 
 Pick the artifact by what the harness exposes. Getting this wrong is the most common failure (the "Wrong artifact for the harness" anti-pattern in SKILL.md).
 
-### ChatGPT — browser or app
+Each kind of behavior needs a particular kind of surface:
 
-- **Config surface:** Custom Instructions (Settings → Personalization → Custom Instructions). Persistent across all chats.
-- **Artifact:** a posture block (a few sentences). This is the universal lowest-common-denominator deliverable.
-- **No** skills, **no** MCP, **no** autonomous file management. Anything requiring those is off the table for this harness — re-express it as posture text or a copy-paste path-guide.
-- **Projects** (if the user has them): per-project instructions + pinned reference files. Use for task-scoped behavior that shouldn't apply globally.
-- **Install:** the user pastes the block themselves (the agent can't write ChatGPT settings). Show the exact menu path and a screenshot of the post-state if available.
+- **Always on, across all work** → the instructions the harness loads in every session (a global instruction file, a rules folder, or a custom-instructions box).
+- **One project only** → that project's instruction file or per-project instructions.
+- **A capability used on demand** → a skill, or the harness's nearest equivalent (a reference file the model consults, a saved prompt).
+- **An automated behavior the harness must enforce** ("whenever X, do Y") → a hook or other harness-run automation. A rule the model reads cannot guarantee it, because the harness runs automations and the model does not.
+- **External data or tools** → the harness's tool or connector system.
 
-### Claude Code
+Find out which of these surfaces the user's harness has before choosing: read its current documentation, read its config files where the agent can reach them, or ask the user. Paths, menus and size limits change between releases, so establish them in the session rather than from memory. A harness with only a chat box and no persistent settings gets a preamble the user pastes at the start of each session; say that it won't persist.
 
-- **Config surfaces, by behavior type:**
-  - Always-on behavior across all projects → `~/.claude/CLAUDE.md` or a file in `~/.claude/rules/`.
-  - Project-specific behavior → that project's `CLAUDE.md` or `<project>/.claude/rules/`.
-  - A reusable capability invoked on demand → a skill (`~/.claude/skills/<name>/SKILL.md` for cross-project; `<project>/.claude/skills/` for project-local).
-  - An *automated* behavior the harness must enforce ("whenever X, do Y") → a hook in `settings.json` (the harness runs hooks, not the model — memory/rules can't fulfill an automation).
-  - External data/tools → an MCP server.
-- **Install:** the agent can write most of these directly. Confirm before editing global config.
-
-### codex
-
-- **Config surface:** `AGENTS.md` (project or `~/.codex/AGENTS.md`), `~/.codex/config.toml`. codex reads only `AGENTS.md` by default; it reads `CLAUDE.md` when `AGENTS.md` is absent only if `project_doc_fallback_filenames = ["CLAUDE.md"]` is set in `~/.codex/config.toml` (the default is an empty list).
-- **Cross-CLI pointer pattern:** for a user on multiple agentic harnesses, keep ONE rule set (the `.claude/` rules) and point `AGENTS.md` (and `GEMINI.md`) at it, rather than maintaining divergent copies. One source of truth, harness-specific pointers.
-
-### Gemini CLI
-
-- **Config surface:** `GEMINI.md`. Same cross-CLI pointer pattern applies.
-
-### Other / unknown harness
-
-- Ask what config surfaces it exposes (persistent instructions? per-project? tool/extension system?). Map to the nearest case above. If it only has a chat box with no persistent settings, the artifact is a copy-paste preamble the user pastes at the start of each session — flag that it won't persist.
+- **Install:** the agent writes what it can reach after confirming, and gives the exact text and its destination for anything it can't, such as a settings screen.
+- **Several harnesses:** keep one rule set in one place and point each harness's instruction file at it, rather than maintaining copies that drift apart.
