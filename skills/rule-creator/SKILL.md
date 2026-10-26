@@ -5,9 +5,9 @@ description: Write, audit, or remove an instruction that changes how an LLM beha
 
 # Rule Creator
 
-Produce the smallest instruction that reliably changes the model's behavior, in the form the user's harness can actually use — and test it against its own absence. The only reader is the model. Harness map and the nine architecture principles: [REFERENCE.md](REFERENCE.md).
+Produce the smallest instruction that reliably changes the model's behavior, in the form the user's harness can actually use — and test it against its own absence. The only reader is the model. Harness map and the nine architecture principles: [REFERENCE.md](REFERENCE.md). If a `personal.md` sits beside this file, read it first: it holds the owner's own paths and cases, which override the defaults below.
 
-Two paths: **write** a new rule → steps 1–6. **Audit** existing rules → step 7.
+Two paths: **write** a new rule → steps 1–7. **Audit** existing rules → step 8. Every step ends on a **Done when** check; a step without one gets skipped under the pull of the next.
 
 ## The shape test — every rule, new or existing, passes this first
 
@@ -33,7 +33,9 @@ Run these in order. Don't announce them.
 
 ### 1. Detect the environment
 
-OS, model + version, harness, and its config surfaces. **Read the harness's own current documentation**, not training-data memory of it. **Read the existing config first** — a rule that duplicates or contradicts what is there is worse than none.
+OS, model + version, harness, and its config surfaces. **Read the harness's own current documentation**, not training-data memory of it. **Read the existing config first** — a rule that duplicates or contradicts what is there is worse than none. List the rules and skills that already touch the same moment.
+
+Done when you can name the harness and its config surfaces from its current documentation, and name each overlap with the existing config, or say there are none.
 
 ### 2. Find the behavior under the request
 
@@ -41,15 +43,21 @@ The user names a symptom ("it's too agreeable"). Find the property they want ("p
 
 **Capture the author's own words before drafting, then distil with their agreement.** Ask what they are trying to accomplish and keep the answer verbatim — loose phrasing included — with the date and session id. The verbatim is the record; a one-sentence distillation the author signs off on is what the rule carries. Keep both, because a stated reason nobody can check against the original is how a rule drifts from what the author was trying to accomplish. Where the author cannot say what they wanted, record that rather than inventing one. Where no author is present because the rule was proposed off an observed correction, say so in the record and mark the reason as inferred. Destination: a `rule-intents.yml` kept with the user's other state files (`~/.claude/rule-intents.yml` if they keep none), created if absent — never inside the rules directory, where it would load every session and defeat the point of keeping it out of the rule. Editing an existing rule? Update its entry in the same turn — the file/section pointer and, where the wording changed, the agreed distillation.
 
+Done when the author's words are recorded verbatim and the author has agreed the one-sentence version, or the record says the reason is inferred.
+
 ### 3. Find the moment
 
 Apply the shape test above before drafting a word. This is the step that decides whether you are writing a rule at all, or building a hook, or telling the user plainly that this one rests on correction. Most rules that fail in practice failed here.
+
+Done when the rule is written as *when T, do A*, assigned to a named harness mechanism with block or report decided, or labeled as holding only through the user's corrections.
 
 ### 4. Draft it
 
 The smallest instruction producing the behavior, in the harness's form. State the trigger inline; push depth into a companion file reached by a pointer rather than inlining it. Carry the reason in the rule, in one sentence, and only the author's — naming the failure and what it costs is what lets the model handle variants the rule never enumerated, and is usually what prevents the next three "do NOT" patches, so the reason is what makes a rule shorter rather than an addition to it. **The reason has to be resolvable where the rule sits.** A reason that cites another document cannot be acted on without fetching it, and where the citation is a rule that was retired, fetching it puts withdrawn instructions into the context window as though they were live. State the failure and its cost in the rule's own words; cite nothing. A reason you cannot source to the author is the failure mode: it reads as authoritative and steers toward a purpose nobody has. Where a rule is irreducible personal preference — how the user wants things worded, sequenced, framed — no model improvement derives it, so do not thin it on the argument that newer models need fewer rules. That argument applies to invariants and to compensations for tools that fail silently, not to taste.
 
 **What does not go in the rule.** Operational meta — who ruled it and when, dates, trial status, revert paths, where something moved from — is read rarely and only by maintenance, while the rule itself is re-sent on every request of every session. Route it to the intents record or the decisions log. One exception, and it is content rather than meta: the specific failure the rule exists to prevent. Naming the incident is what makes a session treat a hard rule as binding, so a safety rule keeps its incident and loses its attribution.
+
+Done when the draft is in its final wording for its home, carries the author's reason in its own words (or is marked inferred), and holds no operational meta.
 
 ### 5. Test it against its own absence
 
@@ -63,11 +71,21 @@ Where a with/without test runs, run the same representative prompts with and wit
 
 Run with/without test sessions only where they cannot act: a sandboxed or read-only permission mode, no issue-tracker or other account tools, and a working folder that holds no live state. Check that one run's actions are refused before starting the rest. Test runs told only to read have posted to an issue tracker and overwritten a live session's notes.
 
-### 6. Install
+Done when you have named what to look for, in which sessions and when, or reported how many runs changed out of how many, with and without the rule, under its experiment label.
 
-Exact steps for the detected harness, copy-paste ready. Flag what the user must paste themselves versus what the agent can write. For multi-harness users, point each harness at one shared rule set rather than maintaining copies.
+### 6. Present it for approval
 
-### 7. Audit an existing set
+Show the exact text, its home and why, each overlap it touches with the edits or removals that overlap needs, and how you will know it worked. Write nothing until the user approves, because a rule shapes every session after it and the user decides what their AI believes.
+
+Done when the user has approved the exact text and home, or asked for changes.
+
+### 7. Install
+
+Exact steps for the detected harness, copy-paste ready. Flag what the user must paste themselves versus what the agent can write. For multi-harness users, point each harness at one shared rule set rather than maintaining copies. Apply the approved overlap edits in the same pass.
+
+Done when the rule reads back from its home exactly as approved, its intents entry points at it, and every approved overlap edit is applied.
+
+### 8. Audit an existing set
 
 Read the rules rather than classifying them mechanically — for a set small enough to read, reading is the correct first method and a measurement is what needs justifying. A search over prose can show a phrase is absent, never that a concept is; a hit is real evidence, which is exactly why a miss feels like evidence and is not. Claims about what a rule argues come from reading it.
 
@@ -93,3 +111,5 @@ Read the rules rather than classifying them mechanically — for a set small eno
 - **Removal** — three findings each justify proposing removal: the rule fired and the work would have gone the same way without it; the situation it was written for no longer exists; another rule now covers it. **That a rule has never fired is NOT grounds** — a rule that silently broke and one whose case never arose are indistinguishable from outside, so removing on non-firing removes the broken ones preferentially.
 
 Propose; never remove unilaterally. The user rules on each.
+
+Done when Pass A's counts are reported, every member has a Pass B finding on each of the four checks, and every proposed change is in front of the user.
