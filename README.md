@@ -42,4 +42,4 @@ In Claude Code you can install it from the Family IT Guy plugin marketplace inst
 /plugin install rule-creator@familyitguy
 ```
 
-Then ask for a rule in plain words ("write me a rule so my AI stops…").
+Then ask for a rule in plain words ("write me a rule so my AI stops…"). If Claude Code asks permission to read the plugin's reference file, allow it. To update later: `/plugin marketplace update familyitguy` then `/plugin install rule-creator@familyitguy`.
